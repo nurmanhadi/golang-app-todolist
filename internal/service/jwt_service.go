@@ -8,7 +8,7 @@ import (
 )
 
 func JwtGenerateAccesToken(username string, key []byte) (string, error) {
-	claims := model.JwtCustomeClaim{
+	claims := model.JwtCustomClaim{
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add((time.Hour * 24) * 7)),
@@ -20,4 +20,17 @@ func JwtGenerateAccesToken(username string, key []byte) (string, error) {
 		return "", err
 	}
 	return ss, nil
+}
+func JwtVerifyToken(tokenString string, key []byte) (*model.JwtCustomClaim, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &model.JwtCustomClaim{}, func(t *jwt.Token) (interface{}, error) {
+		return key, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	claims := token.Claims.(*model.JwtCustomClaim)
+	claimType := &model.JwtCustomClaim{
+		Username: claims.Username,
+	}
+	return claimType, nil
 }

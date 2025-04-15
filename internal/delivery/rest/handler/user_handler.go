@@ -30,10 +30,7 @@ func (h *userHandler) Register(c *fiber.Ctx) error {
 	if err := h.userService.Register(*request); err != nil {
 		return err
 	}
-	return c.Status(200).JSON(fiber.Map{
-		"data": "OK",
-		"path": c.OriginalURL(),
-	})
+	return ResponseHandler(c, 200, "OK")
 }
 func (h *userHandler) Login(c *fiber.Ctx) error {
 	request := new(model.LoginUserRequest)
@@ -44,8 +41,5 @@ func (h *userHandler) Login(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	return c.Status(200).JSON(fiber.Map{
-		"data": token,
-		"path": c.OriginalURL(),
-	})
+	return ResponseHandler(c, 200, token)
 }
