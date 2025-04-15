@@ -26,14 +26,17 @@ func Bootstrap(config *BootstrapConfig) {
 	// repository
 	userRepository := repository.UserRepositoryImpl(config.DB)
 	checklistRepository := repository.ChecklistRepositoryImpl(config.DB)
+	itemRepository := repository.ItemRepositoryImpl(config.DB)
 
 	// service
 	userService := service.UserServiceImpl(userRepository, config.Validation, config.Log, config.Viper)
 	checklistService := service.ChecklistServiceImpl(checklistRepository, config.Validation, config.Log)
+	itemService := service.ItemServiceImpl(itemRepository, checklistRepository, config.Validation, config.Log)
 
 	// handler
 	userHandler := handler.USerHandlerImpl(userService)
 	checklistHandler := handler.ChecklistHandlerImpl(checklistService)
+	itemHandler := handler.ItemHandlerImpl(itemService)
 
 	// middleware
 	middleware := &middleware.MiddlewareConfig{
@@ -47,6 +50,7 @@ func Bootstrap(config *BootstrapConfig) {
 		AuthMiddleware:   middleware,
 		UserHandler:      userHandler,
 		ChecklistHandler: checklistHandler,
+		ItemHandler:      itemHandler,
 	}
 	route.Setup()
 }

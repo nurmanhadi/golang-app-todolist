@@ -5,5 +5,5 @@ type Item struct {
 	ChecklistId int    `json:"checklist_id"`
 	ItemName    string `json:"item_name"`
 	Description string `json:"description"`
-	Status      string `json:"status"`
+	Status      string `gorm:"default:'pending'" json:"status"`
 }

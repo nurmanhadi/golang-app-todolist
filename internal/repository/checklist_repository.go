@@ -11,6 +11,7 @@ type ChecklistRepository interface {
 	FindAll(userUsername string) ([]entity.Checklist, error)
 	Delete(checklistId int) error
 	Count(checklistId int) (int64, error)
+	FindById(checklistId int) (*entity.Checklist, error)
 }
 type checklistRepository struct {
 	db *gorm.DB
@@ -28,7 +29,7 @@ func (r *checklistRepository) FindAll(userUsername string) ([]entity.Checklist, 
 	if err != nil {
 		return nil, err
 	}
-	return checklists, err
+	return checklists, nil
 }
 func (r *checklistRepository) Delete(checklistId int) error {
 	checklist := new(entity.Checklist)
@@ -45,5 +46,13 @@ func (r *checklistRepository) Count(checklistId int) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return count, err
+	return count, nil
+}
+func (r *checklistRepository) FindById(checklistId int) (*entity.Checklist, error) {
+	checklist := new(entity.Checklist)
+	err := r.db.Where("id = ?", checklistId).Preload("Items").First(&checklist).Error
+	if err != nil {
+		return nil, err
+	}
+	return checklist, nil
 }

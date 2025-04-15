@@ -15,6 +15,7 @@ type ChecklistService interface {
 	Add(userUsername string, request model.ChecklistAddRequest) error
 	FindAll(userUsername string) ([]entity.Checklist, error)
 	Delete(checklistId string) error
+	FindById(checklistId string) (*entity.Checklist, error)
 }
 type checklistService struct {
 	checklistRepository repository.ChecklistRepository
@@ -79,4 +80,17 @@ func (s *checklistService) Delete(checklistId string) error {
 		return err
 	}
 	return nil
+}
+func (s *checklistService) FindById(checklistId string) (*entity.Checklist, error) {
+	newChecklistId, err := strconv.Atoi(checklistId)
+	if err != nil {
+		s.log.WithError(err).Error("failed parse string to int")
+		return nil, err
+	}
+	checklist, err := s.checklistRepository.FindById(newChecklistId)
+	if err != nil {
+		s.log.WithError(err).Error("failed get checklist by id to dayabase")
+		return nil, err
+	}
+	return checklist, nil
 }

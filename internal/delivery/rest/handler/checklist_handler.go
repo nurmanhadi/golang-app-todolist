@@ -12,6 +12,7 @@ type ChecklistHandler interface {
 	Add(c *fiber.Ctx) error
 	FindAll(c *fiber.Ctx) error
 	Delete(c *fiber.Ctx) error
+	FindById(c *fiber.Ctx) error
 }
 type checklistHandler struct {
 	checklistService service.ChecklistService
@@ -60,4 +61,17 @@ func (h *checklistHandler) Delete(c *fiber.Ctx) error {
 		return err
 	}
 	return ResponseHandler(c, 200, "OK")
+}
+func (h *checklistHandler) FindById(c *fiber.Ctx) error {
+	checklistId := c.Params("checklistId")
+	_, ok := c.Locals("username").(string)
+	if !ok {
+		return exception.NewError(401, "unauthorized")
+	}
+
+	checklist, err := h.checklistService.FindById(checklistId)
+	if err != nil {
+		return err
+	}
+	return ResponseHandler(c, 200, checklist)
 }

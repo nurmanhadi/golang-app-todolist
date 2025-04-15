@@ -1,4 +1,3 @@
-DROP TABLE items;
 CREATE TABLE items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     checklist_id INT NOT NULL,

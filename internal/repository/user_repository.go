@@ -31,7 +31,7 @@ func (r *userRepository) FindByUsername(username string) (*entity.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	return user, err
+	return user, nil
 }
 func (r *userRepository) CountByUsername(username string) (int64, error) {
 	user := new(entity.User)
@@ -40,7 +40,7 @@ func (r *userRepository) CountByUsername(username string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return count, err
+	return count, nil
 }
 func (r *userRepository) CountByEmail(email string) (int64, error) {
 	user := new(entity.User)
@@ -49,5 +49,5 @@ func (r *userRepository) CountByEmail(email string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return count, err
+	return count, nil
 }

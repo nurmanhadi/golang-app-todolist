@@ -1,0 +1,2 @@
+PUT http://localhost:8080/api/checklist/2/item/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QxIiwiZXhwIjoxNzQ1MzIwMjI2fQ.lQS1UQyeMCSGcRFPNm5za_bX8uszh5iUNfIts_f-iDM
